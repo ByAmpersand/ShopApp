@@ -1,21 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.Models;
 using System.Diagnostics;
+using ShopApp.Data;
 
 namespace ShopApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Controller    
     {
         private readonly ILogger<HomeController> _logger;
+		private readonly ApplicationDbContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+		public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
-        }
+			this.context = context;
+		}
 
         public IActionResult Index()
         {
-            return View();
+            //this method operate to load data in view 
+
+            var items = context.Products.ToList();
+
+            return View(items);
         }
 
         public IActionResult Privacy()
